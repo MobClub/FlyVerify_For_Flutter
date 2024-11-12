@@ -43,18 +43,7 @@ android {
     }
 
     signingConfigs{
-        release {
-            storeFile file("fly.jks")
-            storePassword "fly123"
-            keyAlias "fly"
-            keyPassword "fly123"
-        }
-        debug{
-            storeFile file("fly.jks")
-            storePassword "fly123"
-            keyAlias "fly"
-            keyPassword "fly123"
-        }
+
     }
 
     buildTypes {
