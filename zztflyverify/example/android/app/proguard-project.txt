@@ -1,14 +1,14 @@
 -ignorewarnings
 -dontoptimize
 -keepattributes SourceFile,LineNumberTable,Exceptions,InnerClasses,EnclosingMethod,Signature,*Annotation*
-# for Flyverify
-
--keep class com.mob.**{*;}
+-keep class cn.fly.**{*;}
 # for CTCC
 -keep class cn.com.chinatelecom.account.**{*;}
 # for CUCC
--keep class com.sdk.**{*;}
-#for xiaowo
--keep class com.unicom.xiaowo.wo.account.shield.**{*;}
+-dontwarn com.unicom.online.account.shield.**
+-keep class com.unicom.online.account.shield.** {*;}
 # for CMCC
--keep class com.cmic.sso.sdk.**{*;}
+-dontwarn com.cmic.gen.sdk.**
+-keep class com.cmic.gen.sdk.**{*;}
+# for CUCCXW
+-keep class com.unicom.xiaowo.account.shield.**{*;}

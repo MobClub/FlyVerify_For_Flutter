@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/fly_verify_title_bar_container"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@color/fly_verify_common_bg">
+	<ImageView
+		android:id="@+id/fly_verify_title_bar_left"
+		android:layout_width="@dimen/fly_verify_height_title_bar"
+		android:layout_height="@dimen/fly_verify_height_title_bar"
+		android:scaleType="centerInside"
+		android:src="@drawable/fly_verify_page_one_key_login_close"
+		android:contentDescription="@string/fly_verify_title_bar_description_left"/>
+	<TextView
+		android:id="@+id/fly_verify_title_bar_center"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:gravity="center"
+		android:paddingRight="50dp"
+		android:paddingLeft="50dp"
+		tools:text="标题"
+        android:ellipsize="end"
+        android:maxLines="1"
+		android:textColor="@color/fly_verify_text_color_common_black"
+		android:textSize="@dimen/fly_verify_text_size_s"/>
+	<ImageView
+		android:id="@+id/fly_verify_title_bar_right"
+		android:layout_width="@dimen/fly_verify_height_title_bar"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:scaleType="centerInside"
+		android:visibility="invisible"
+		android:contentDescription="@string/fly_verify_title_bar_description_right"/>
+</RelativeLayout>
+

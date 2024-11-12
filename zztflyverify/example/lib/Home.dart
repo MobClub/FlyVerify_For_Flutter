@@ -24,10 +24,16 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+                Flyverify.toast('initState');
     //隐私协议
-    Flyverify.registerSDK(
-        appKey: "moba6b6c6d6", appSecret: "b89d2427a3bc7ad1aea1e1e8c1d36bf3");
-        
+    if (Platform.isIOS){
+        Flyverify.registerSDK(
+            appKey: "moba6b6c6d6", appSecret: "b89d2427a3bc7ad1aea1e1e8c1d36bf3");
+    }else{
+     Flyverify.registerSDK(
+                appKey: "3a2c2a977d3d2", appSecret: "b89d2427a3bc7ad1aea1e1e8c1d36bf3");
+                Flyverify.toast('register');
+    }
     _submitPrivacyStatus(true);
     Flyverify.preVerify(result: (Map? ret, Map? err) {
       if (err != null) {
@@ -205,8 +211,7 @@ class _HomeState extends State<Home> {
                     && resultStr.contains('token')
                     && resultStr.contains('opToken')
                     && resultStr.contains('operator')) {
-                  // 结果检验成功，进行网络请求
-                  _doLoginWith(rt);
+                    login(rt);
                 } else {
                   _showAlert('登录验证失败 $resultStr');
                 }
@@ -235,7 +240,7 @@ class _HomeState extends State<Home> {
                     if (resultStr.contains('token')
                         && resultStr.contains('opToken')
                         && resultStr.contains('operator')) {
-                      _doLoginWith(rt['ret']);
+                        login(rt['ret']);
                     }
                   }
                 }
@@ -720,6 +725,18 @@ class _HomeState extends State<Home> {
     );
     }
   }
+    void login(Map rt) async {
+        if (Platform.isIOS){
+            // 结果检验成功，进行网络请求
+            _doLoginWith(rt);
+        }else{
+            rt['phoneOperator'] = rt['operator'];
+            rt['appkey'] = '3a2c2a977d3d2';
+            rt['md5'] = '879f9a7a14a16a41b26ec3c755e4958e';
+            androidLogin(rt);
+        }
+
+    }
 
   void _doLoginWith(Map params) async {
     //因为在调用处已经添加了参数合法性判断，此处无需再进行合法性判断
@@ -731,6 +748,18 @@ class _HomeState extends State<Home> {
     Flyverify.manualDismissLoading();
     _showAlert(response.body.toString());
   }
+  void androidLogin(Map params) async {
+     //因为在调用处已经添加了参数合法性判断，此处无需再进行合法性判断
+                      var header = Map<String, String>();
+                      header['Content-Type'] = 'application/json';
+                      final client = http.Client();
+                      final response = await client.post(
+                          Uri.http("demo.accuratead.cn", "/demo/sdkLogin"),
+                          headers: header,
+                          body: json.encode(params));
+                      print('Login Result: ${response.body.toString()}');
+                      _showAlert(response.body.toString());
+      }
 }
 
 enum GridViewWidgetMethodType {

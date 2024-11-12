@@ -1,3 +1,35 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.mob.flutter.secverify">
+    package="cn.fly.verify.flutter">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <application>
+        <activity
+            android:name="cn.fly.verify.login.impl.cmcc.CmccOAuthProxyActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity-alias
+            android:name="com.cmic.gen.sdk.view.GenLoginAuthActivity"
+            android:targetActivity="cn.fly.verify.login.impl.cmcc.CmccOAuthProxyActivity" />
+
+        <activity
+            android:name="cn.com.chinatelecom.account.sdk.ui.AuthActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="cn.fly.verify.ui.FlyUI"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="standard"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+
+        <provider
+            android:name="cn.fly.verify.FlyVerifyProvider"
+            android:authorities="${applicationId}.fly.verify.FlyVerifyProvider"
+            android:exported="false"
+            android:multiprocess="true" />
+    </application>
 </manifest>

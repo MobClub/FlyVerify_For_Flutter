@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- NOTICE: attr order of each styleable can not be modified -->
+	<declare-styleable name="VerifyCommonButton">
+		<attr name="vcombtn_text" format="string"/>
+		<attr name="vcombtn_bg" format="integer"/>
+		<attr name="vcombtn_textColor" format="color"/>
+		<attr name="vcombtn_textSize" format="integer"/>
+	</declare-styleable>
+</resources>

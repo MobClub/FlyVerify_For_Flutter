@@ -1,4 +1,4 @@
-group 'com.mob.flutter.secverify'
+group 'cn.fly.verify.flutter'
 version '1.0'
 
 buildscript {
@@ -30,9 +30,15 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 
+
 dependencies {
-    compileOnly fileTree(include: ['*.jar','*.aar'],dir: 'libs')
+    implementation fileTree(include: ['*.jar','*.aar'],dir: 'libs')
 }

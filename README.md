@@ -27,7 +27,6 @@
 ```
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath 'com.mob.sdk:MobSDK:+'
     }
 ```
 2. 在/android/app/build.gradle中添加以下代码：
@@ -35,19 +34,13 @@
 ```
 apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-// 导入MobSDK
-apply plugin: 'com.mob.sdk'
-MobSDK {
-   appKey "替换为mob官方申请的appkey"
-   appSecret "替换为mob官方申请的appkey对应的appSecret"
-   Flyverify {}
-}
+
 ```
 3. 在根路径下的pubspec.yaml文件中添加Flyverify flutter插件：
 
 ```
 dependencies:
-  Flyverify_plugin:^1.30.7
+  fvverify_plugin:^1.0.0
 ```
 
 在你项目的Dart中添加以下代码：
@@ -63,8 +56,9 @@ dependencies:
 ```
 android {
     // lines skipped
+
     dependencies {
-        provided rootProject.findProject(":Flyverify")
+        provided rootProject.findProject(":zztflyverify")
     }
 }
 ```
@@ -81,8 +75,8 @@ android {
     GeneratedPluginRegistrant.registerWith(this);
     // 注册Flyverify Flutter插件
     FlyverifyPlugin.registerWith(registrarFor(FlyverifyPlugin.CHANNEL));
-    // 初始化Flyverify
-    MobSDK.init(this, MOB_APPKEY, MOB_APPSECRET);
+    // 初始化
+    FvverifyPlugin.registerSDK(appKey: "", appSecret: "");
   }
 ```
 

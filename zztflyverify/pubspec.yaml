@@ -30,7 +30,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.mob.flutter.secverify
-        pluginClass: SecverifyPlugin
+        package: cn.fly.verify.flutter
+        pluginClass: FlyverifyPlugin
       ios:
         pluginClass: FlyverifyPlugin

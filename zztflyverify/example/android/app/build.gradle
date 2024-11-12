@@ -23,18 +23,9 @@ if (flutterVersionName == null) {
 
 apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-// 导入MobSDK
-apply plugin: 'com.mob.sdk'
 
-MobSDK {
-    appKey "moba6b6c6d6"
-    appSecret "b89d2427a3bc7ad1aea1e1e8c1d36bf3"
-    SecVerify {
-        version '3.3.1'
-    }
-}
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 
     lintOptions {
         disable 'InvalidPackage'
@@ -42,20 +33,27 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.mob.secverify.demo"
-        minSdkVersion 16
-        targetSdkVersion 28
+        applicationId "cn.fly.verify.demo"
+        minSdkVersion 19
+        targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
 
     signingConfigs{
         release {
-            storeFile file("private.keystore")
-            storePassword "mob123"
-            keyAlias "private.keystore"
-            keyPassword "mob123"
+            storeFile file("fly.jks")
+            storePassword "fly123"
+            keyAlias "fly"
+            keyPassword "fly123"
+        }
+        debug{
+            storeFile file("fly.jks")
+            storePassword "fly123"
+            keyAlias "fly"
+            keyPassword "fly123"
         }
     }
 
@@ -69,6 +67,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
             signingConfig signingConfigs.release
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
         }
     }
 }

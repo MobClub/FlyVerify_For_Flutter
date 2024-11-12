@@ -1,5 +1,5 @@
-// import 'package:json_annotation/json_annotation.dart';
-// import 'package:collection/collection.dart' show IterableExtension;
+import 'package:json_annotation/json_annotation.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 
 part 'flyverify_UIConfig.g.dart';
 
