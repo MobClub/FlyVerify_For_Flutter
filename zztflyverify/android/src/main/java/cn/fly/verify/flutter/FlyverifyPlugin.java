@@ -52,7 +52,7 @@ public class FlyverifyPlugin implements FlutterPlugin,MethodCallHandler, EventCh
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				FlyVerify.setFlutterChannel();
+				FlyVerify.setChannel(4);
 			}
 		}).start();
 	}
