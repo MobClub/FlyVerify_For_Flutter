@@ -5,4 +5,7 @@
     <string name="agreement_Start">登录即同意</string>
     <string name="agreement_end">并使用本机号码登录</string>
     <string name="uncheck_tip">请阅读并勾选</string>
+    <string name="customer_agreement1">服务条款一</string>
+    <string name="customer_agreement2">服务条款二</string>
+
 </resources>
