@@ -436,8 +436,8 @@ public class LandUiSettingsTransfer {
 			return builder;
 		}
 		/**切换登录*/
-		if (switchacc.containsKey("switchAccColor")) {
-			String switchAccColor = (String) switchacc.get("switchAccColor");
+		if (switchacc.containsKey("switchAccColorIdName")) {
+			String switchAccColor = (String) switchacc.get("switchAccColorIdName");
 			if (!TextUtils.isEmpty(switchAccColor)) {
 				int switchColodId = ResHelper.getColorRes(FlyVerify.getContext(),switchAccColor);
 				builder.setSwitchAccColorId(switchColodId);

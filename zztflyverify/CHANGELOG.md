@@ -1,3 +1,6 @@
+## 1.0.1
+
+* fix ui bug
 ## 1.0.0
 
 * add all functions of onekeylogin

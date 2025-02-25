@@ -40,7 +40,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 ```
 dependencies:
-  fvverify_plugin:^1.0.0
+  fvverify_plugin:^1.0.1
 ```
 
 在你项目的Dart中添加以下代码：

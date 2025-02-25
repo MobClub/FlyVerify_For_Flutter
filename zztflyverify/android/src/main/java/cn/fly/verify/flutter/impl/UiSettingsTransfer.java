@@ -371,8 +371,8 @@ public class UiSettingsTransfer {
 //			setSwitchAccBuilder(builder, switchacc);
 //		}
 		/**切换登录*/
-		if (options.containsKey("switchAccColor")) {
-			String switchAccColor = (String) options.get("switchAccColor");
+		if (options.containsKey("switchAccColorIdName")) {
+			String switchAccColor = (String) options.get("switchAccColorIdName");
 			if (!TextUtils.isEmpty(switchAccColor)) {
 				int switchColodId = ResHelper.getColorRes(FlyVerify.getContext(),switchAccColor);
 				builder.setSwitchAccColorId(switchColodId);
