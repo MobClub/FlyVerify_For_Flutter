@@ -23,7 +23,10 @@ if (flutterVersionName == null) {
 
 apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-
+apply plugin: 'cn.fly.sdk'
+FlySDK{
+    FlyVerify{}
+}
 android {
     compileSdkVersion 30
 
@@ -72,11 +75,6 @@ flutter {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
-    implementation "cn.fly:FlyVerify:+@aar"
-    implementation "cn.fly.plugins:FlyPlugins-Cmcc:+@aar"
-    implementation "cn.fly.plugins:FlyPlugins-Cucc:+@aar"
-    implementation "cn.fly.plugins:FlyPlugins-XW:+@aar"
-    implementation "cn.fly.plugins:FlyPlugins-Ctcc:+@aar"
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
