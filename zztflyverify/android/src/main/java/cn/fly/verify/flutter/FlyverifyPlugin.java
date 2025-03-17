@@ -486,16 +486,9 @@ public class FlyverifyPlugin implements FlutterPlugin,MethodCallHandler, EventCh
 			public void onFailure(VerifyException e) {
 				final Map<String, Object> map = new HashMap<>();
 				final Map<String, Object> err = new HashMap<>();
-				String message = "";
-				String cause = "";
 				if (e != null) {
-					message = e.getMessage();
-					err.put("message", message);
-					Throwable throwable = e.getCause();
-					if (throwable != null) {
-						cause = throwable.toString();
-						err.put("cause", cause);
-					}
+					err.put("message", e.getMessage());
+					err.put("code", e.getCode());
 				}
 				//使用 “err” 包装一层
 				map.put("err", err);
@@ -575,16 +568,9 @@ public class FlyverifyPlugin implements FlutterPlugin,MethodCallHandler, EventCh
 				//将错误信息封装成Map
 				final Map<String, Object> map = new HashMap<>();
 				final Map<String, Object> err = new HashMap<>();
-				String message = "";
-				String cause = "";
 				if (e != null) {
-					message = e.getMessage();
-					err.put("message", message);
-					Throwable throwable = e.getCause();
-					if (throwable != null) {
-						cause = throwable.toString();
-						err.put("cause", cause);
-					}
+					err.put("message", e.getMessage());
+					err.put("code", e.getCode());
 				}
 				//使用 “err” 包装一层
 				map.put("err", err);
