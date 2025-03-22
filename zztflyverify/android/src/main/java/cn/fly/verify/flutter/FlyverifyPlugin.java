@@ -56,13 +56,6 @@ public class FlyverifyPlugin implements FlutterPlugin,MethodCallHandler, EventCh
 			}
 		}).start();
 	}
-	/**
-	 * Plugin registration.
-	 */
-	public static void registerWith(PluginRegistry.Registrar registrar) {
-		final FlyverifyPlugin instance = new FlyverifyPlugin();
-		instance.onAttachedToEngine(registrar.context(),registrar.messenger());
-	}
 
 	/**
 	 * Flutter调用接口
@@ -606,9 +599,9 @@ public class FlyverifyPlugin implements FlutterPlugin,MethodCallHandler, EventCh
 
 	@Override
 	public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-
+		methodChannel.setMethodCallHandler(null);
+		methodChannel = null;
 	}
-
 
 	private void onAttachedToEngine(Context applicationContext, BinaryMessenger messenger){
 		methodChannel = new MethodChannel(messenger, METHOD_CHANNEL);
