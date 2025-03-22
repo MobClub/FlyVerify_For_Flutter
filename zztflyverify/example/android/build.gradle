@@ -1,29 +1,7 @@
-buildscript {
-    repositories {
-        google()
-        jcenter()
-        maven {
-            url "https://mvn.zztfly.com/android"
-//            url 'http://10.89.104.129:8080/job/iMaven/ws/android/'
-        }
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.1'
-
-        classpath 'cn.fly.sdk:FlySDK:+'
-
-    }
-}
-
 allprojects {
     repositories {
         google()
-        jcenter()
-        maven {
-            url "https://mvn.zztfly.com/android"
-//            url 'http://10.89.104.129:8080/job/iMaven/ws/android/'
-        }
+        mavenCentral()
     }
 }
 
@@ -35,6 +13,6 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
-task clean(type: Delete) {
+tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
