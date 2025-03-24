@@ -731,8 +731,8 @@ class _HomeState extends State<Home> {
             _doLoginWith(rt);
         }else{
             rt['phoneOperator'] = rt['operator'];
-            rt['appkey'] = 'your appkey';
-            rt['md5'] = 'your md5';
+            rt['appkey'] = '3a2c2a977d3d2';
+            rt['md5'] = 'b89d2427a3bc7ad1aea1e1e8c1d36bf3';
             androidLogin(rt);
         }
 

@@ -1,5 +1,5 @@
 group 'cn.fly.verify.flutter'
-version '1.0'
+version '1.0.1'
 
 buildscript {
     repositories {
@@ -20,6 +20,7 @@ rootProject.allprojects {
 }
 
 apply plugin: 'com.android.library'
+
 android {
     compileSdkVersion 28
     if (project.android.hasProperty("namespace")){
