@@ -975,10 +975,15 @@ public class UiSettingsTransfer {
 		}
 
 		if (options.containsKey("loginBtnImgIdName")){
-			String loginBtnImgName = (String) options.get("loginBtnImgIdName");
-			if (!TextUtils.isEmpty(loginBtnImgName)){
-				int bgId = ResHelper.getResId(FlyVerify.getContext(),"drawable",loginBtnImgName);
-				builder.setLoginBtnImgId(bgId);
+			String loginBtnImgIdName = (String) options.get("loginBtnImgIdName"); //assets里，转成drawable
+			if (!TextUtils.isEmpty(loginBtnImgIdName)) {
+				try {
+					loginBtnImgIdName = "flutter_assets" + File.separator + "assets" + File.separator+ loginBtnImgIdName;
+					InputStream is = FlyVerify.getContext().getAssets().open(loginBtnImgIdName);
+					Drawable drawable = createBitmap(is, dipToPx(FlyVerify.getContext(), loginBtnWidth), dipToPx(FlyVerify.getContext(), loginBtnHeight));
+					builder.setLoginBtnImgId(drawable);
+				} catch (IOException e) {
+				}
 			}
 		}
 
