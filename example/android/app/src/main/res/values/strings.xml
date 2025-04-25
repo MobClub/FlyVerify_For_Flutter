@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">AndroidProj</string>
-    <string name="one_key_login">一键登录</string>
-    <string name="test_id">测试</string>
-    <string name="agreement_Start">登录即同意</string>
-    <string name="agreement_end">并使用本机号码登录</string>
-    <string name="uncheck_tip">请阅读并勾选</string>
-</resources>

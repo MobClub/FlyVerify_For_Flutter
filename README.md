@@ -27,7 +27,6 @@
 ```
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-
     }
 ```
 2. 在/android/app/build.gradle中添加以下代码：
@@ -41,7 +40,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 ```
 dependencies:
-  Flyverify_plugin:^1.0.0
+  fvverify_plugin:^1.0.1
 ```
 
 在你项目的Dart中添加以下代码：
@@ -57,6 +56,7 @@ dependencies:
 ```
 android {
     // lines skipped
+
     dependencies {
         provided rootProject.findProject(":zztflyverify")
     }
@@ -75,8 +75,8 @@ android {
     GeneratedPluginRegistrant.registerWith(this);
     // 注册Flyverify Flutter插件
     FlyverifyPlugin.registerWith(registrarFor(FlyverifyPlugin.CHANNEL));
-    // 初始化Flyverify
-    FlyverifyPlugin.init(this, APPKEY, APPSECRET);
+    // 初始化
+    FvverifyPlugin.registerSDK(appKey: "", appSecret: "");
   }
 ```
 
