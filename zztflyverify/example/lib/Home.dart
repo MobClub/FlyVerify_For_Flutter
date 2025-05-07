@@ -345,7 +345,7 @@ class _HomeState extends State<Home> {
     // config.androidPortraitConfig.switchAccTextBold=true;//Bold
 
 //登录按钮
-    config.androidPortraitConfig?.loginBtnImgIdName="btn_bg";//this drawable resource should put in the drawable package in android project
+    config.androidPortraitConfig?.loginBtnImgIdName="bg.png";//this drawable resource should put in the drawable package in android project
 //     config.androidPortraitConfig.loginImgPressedName="#FF6200EE";//loginImgPressedName和loginImgPressedName同时设置才会生效
 //     config.androidPortraitConfig.loginImgPressedName="#FF000000";//loginImgPressedName和loginImgPressedName同时设置才会生效
     // config.androidPortraitConfig.loginBtnTextIdName="one_key_login";//receive an id,not a String
