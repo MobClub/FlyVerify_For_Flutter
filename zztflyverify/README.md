@@ -41,7 +41,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 ```
 dependencies:
-  Flyverify_plugin:^1.0.1
+  Flyverify_plugin:^1.0.2
 ```
 
 在你项目的Dart中添加以下代码：

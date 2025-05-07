@@ -1,6 +1,10 @@
-## 1.0.1
-
+## 1.0.2
 * fix ui bug
+
+## 1.0.1
+* compat flutter 3.29
+* fix ui bug
+
 ## 1.0.0
 
 * add all functions of onekeylogin
