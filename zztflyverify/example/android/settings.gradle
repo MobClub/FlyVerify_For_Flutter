@@ -13,6 +13,24 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven {
+            url "https://mvn.zztfly.com/android"
+        }
+    }
+}
+
+// 添加 buildscript 块
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "https://mvn.zztfly.com/android"
+        }
+    }
+    dependencies {
+        // 添加 FlySDK 依赖
+        classpath 'cn.fly.sdk:FlySDK:+'
     }
 }
 
