@@ -1,3 +1,6 @@
+## 1.0.3
+* loginBtnImgIdName support both xml and png
+
 ## 1.0.2
 * fix ui bug
 

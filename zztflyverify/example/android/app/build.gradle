@@ -15,8 +15,8 @@ android {
         applicationId "cn.fly.verify.demo"
         minSdk 19
         targetSdk 34
-        versionCode 100002
-        versionName "1.0.2"
+        versionCode 100003
+        versionName "1.0.3"
 
     }
     signingConfigs {
@@ -38,6 +38,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources false// 关闭资源压缩,否则未使用的drawable编译后会空
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
             signingConfig signingConfigs.release
         }

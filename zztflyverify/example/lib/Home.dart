@@ -20,6 +20,7 @@ class _HomeState extends State<Home> {
   // Properties
   bool _isSupport = false;
   late Map<String, String> _mobileAuthToken;
+  bool isAuto = true;
 
   @override
   void initState() {
@@ -70,6 +71,7 @@ class _HomeState extends State<Home> {
                 FlyVerifyUIConfig config = _configIOSUIConfig();
                 _verify(config: config);
               } else if (Platform.isAndroid){
+                isAuto = true;
                 FlyVerifyUIConfig config = _configAndroidUIConfig();
                 Flyverify.autoFinishOAuthPage(flag: true);
                 _verify(config: config);
@@ -77,6 +79,7 @@ class _HomeState extends State<Home> {
             }
               break;
             case GridViewWidgetMethodType.manualVerify: {
+              isAuto = false;
               FlyVerifyUIConfig config = _configAndroidUIConfig();
               config.iOSConfig?.manualDismiss = true;
               if (Platform.isIOS){
@@ -344,8 +347,8 @@ class _HomeState extends State<Home> {
     config.androidPortraitConfig?.switchAccText='切换手机账号';
     // config.androidPortraitConfig.switchAccTextBold=true;//Bold
 
-//登录按钮
-    config.androidPortraitConfig?.loginBtnImgIdName="bg.png";//this drawable resource should put in the drawable package in android project
+//登录按钮，方便测试xml与png两种方式：当登录验证是自动关闭时，登录按钮使用app/src/main/res/drawable/btn_bg.xml，否则使用flutter_assets/assets/bg.png
+    config.androidPortraitConfig?.loginBtnImgIdName= isAuto?"btn_bg.xml":"bg.png";//this drawable resource should put in the drawable package in android project
 //     config.androidPortraitConfig.loginImgPressedName="#FF6200EE";//loginImgPressedName和loginImgPressedName同时设置才会生效
 //     config.androidPortraitConfig.loginImgPressedName="#FF000000";//loginImgPressedName和loginImgPressedName同时设置才会生效
     // config.androidPortraitConfig.loginBtnTextIdName="one_key_login";//receive an id,not a String

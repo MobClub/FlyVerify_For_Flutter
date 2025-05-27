@@ -1085,10 +1085,21 @@ public class LandUiSettingsTransfer {
 		}
 
 		if (loginBtn.containsKey("loginBtnImgIdName")){
-			String loginBtnImgName = (String) loginBtn.get("loginBtnImgIdName");
-			if (!TextUtils.isEmpty(loginBtnImgName)){
-				int bgId = ResHelper.getResId(FlyVerify.getContext(),"drawable",loginBtnImgName);
+			String loginBtnImgIdName = (String) loginBtn.get("loginBtnImgIdName");
+			//如果是xml，读取R.drawable.xx的int型id并设置到sdk
+			if (!TextUtils.isEmpty(loginBtnImgIdName) && loginBtnImgIdName.endsWith(".xml")) {
+				loginBtnImgIdName = loginBtnImgIdName.substring(0, loginBtnImgIdName.length() - 4);
+				int bgId = ResHelper.getResId(FlyVerify.getContext(),"drawable",loginBtnImgIdName);
 				builder.setLoginBtnImgId(bgId);
+			} else if (!TextUtils.isEmpty(loginBtnImgIdName)) {
+				//如果是图片，读取图片转为drawable并设置到sdk
+				try {
+					loginBtnImgIdName = "flutter_assets" + File.separator + "assets" + File.separator+ loginBtnImgIdName;
+					InputStream is = FlyVerify.getContext().getAssets().open(loginBtnImgIdName);
+					Drawable drawable = createBitmap(is, dipToPx(FlyVerify.getContext(), loginBtnWidth), dipToPx(FlyVerify.getContext(), loginBtnHeight));
+					builder.setLoginBtnImgId(drawable);
+				} catch (IOException e) {
+				}
 			}
 		}
 

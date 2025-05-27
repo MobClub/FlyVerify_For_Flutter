@@ -975,8 +975,14 @@ public class UiSettingsTransfer {
 		}
 
 		if (options.containsKey("loginBtnImgIdName")){
-			String loginBtnImgIdName = (String) options.get("loginBtnImgIdName"); //assets里，转成drawable
-			if (!TextUtils.isEmpty(loginBtnImgIdName)) {
+			String loginBtnImgIdName = (String) options.get("loginBtnImgIdName");
+			//如果是xml，读取R.drawable.xx的int型id并设置到sdk
+			if (!TextUtils.isEmpty(loginBtnImgIdName) && loginBtnImgIdName.endsWith(".xml")) {
+				loginBtnImgIdName = loginBtnImgIdName.substring(0, loginBtnImgIdName.length() - 4);
+				int bgId = ResHelper.getResId(FlyVerify.getContext(),"drawable",loginBtnImgIdName);
+				builder.setLoginBtnImgId(bgId);
+			} else if (!TextUtils.isEmpty(loginBtnImgIdName)) {
+				//如果是图片，读取图片转为drawable并设置到sdk
 				try {
 					loginBtnImgIdName = "flutter_assets" + File.separator + "assets" + File.separator+ loginBtnImgIdName;
 					InputStream is = FlyVerify.getContext().getAssets().open(loginBtnImgIdName);

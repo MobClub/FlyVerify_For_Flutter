@@ -614,7 +614,6 @@ public class FlyverifyPlugin implements FlutterPlugin,MethodCallHandler, EventCh
 	@Override
 	public void onListen(Object arguments, EventChannel.EventSink events) {
 		eventSink = events;
-		System.out.println("onListen");
 	}
 
 
