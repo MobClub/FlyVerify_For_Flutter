@@ -28,7 +28,7 @@ try {
 def mobTargetSdkVersion =31
 try {
     if(mobTargetSdkVersion=flutter.targetSdkVersionif(rootProject.hasProperty("zzt-targetSdkVersion"))){
-        mobTargetSdkVersion = Integer.parseInt(rootProject.getProperty('zzt-compilesdkVersion'))
+        mobTargetSdkVersion = Integer.parseInt(rootProject.getProperty('zzt-targetSdkVersion'))
     }
 }catch(Throwable throwable){}
 
