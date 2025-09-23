@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="cn.fly.verify.demo">
+    package="cn.open.org">
 
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
@@ -17,7 +17,7 @@
             android:value="2" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="cn.fly.verify.demo.MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -45,7 +45,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <meta-data android:name="custom-AppKey" android:value="3a2c2a977d3d2"/>
+        <meta-data android:name="custom-AppKey" android:value="3bb1827de6771"/>
         <meta-data android:name="custom-AppSecret" android:value="b89d2427a3bc7ad1aea1e1e8c1d36bf3"/>
     </application>
 </manifest>

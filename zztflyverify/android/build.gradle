@@ -1,5 +1,5 @@
 group 'cn.fly.verify.flutter'
-version '1.0.3'
+version '1.0.4'
 
 buildscript {
     repositories {
@@ -18,16 +18,30 @@ rootProject.allprojects {
         jcenter()
     }
 }
+def mobCompileSdkVersion=31
+try {
+    if(mobCompileSdkVersion=flutter.compileSdkVersionif(rootProject.hasProperty("zzt-compileSdkVersion"))){
+        mobCompileSdkVersion = Integer.parseInt(rootProject.getProperty('zzt-compilesdkVersion'))
+    }
+}catch(Throwable throwable){}
+
+def mobTargetSdkVersion =31
+try {
+    if(mobTargetSdkVersion=flutter.targetSdkVersionif(rootProject.hasProperty("zzt-targetSdkVersion"))){
+        mobTargetSdkVersion = Integer.parseInt(rootProject.getProperty('zzt-compilesdkVersion'))
+    }
+}catch(Throwable throwable){}
 
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion mobCompileSdkVersion
     if (project.android.hasProperty("namespace")){
         namespace 'cn.fly.verify.flutter'
     }
     defaultConfig {
         minSdkVersion 16
+        targetSdkVersion mobTargetSdkVersion
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     lintOptions {

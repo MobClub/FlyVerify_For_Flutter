@@ -1,6 +1,6 @@
 name: flyverify_plugin
 description: The operator gateway takes the number and verifies the mobile phone number in one second.
-version: 1.0.3
+version: 1.0.4
 homepage: https://www.mob.com/mobService/Flyverify
 
 environment:
