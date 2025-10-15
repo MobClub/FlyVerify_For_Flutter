@@ -26,16 +26,19 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
                 Flyverify.toast('initState');
-    //隐私协议
+
+    // 初始化
     if (Platform.isIOS){
         Flyverify.registerSDK(
-            appKey: "moba6b6c6d6", appSecret: "b89d2427a3bc7ad1aea1e1e8c1d36bf3");
+            appKey: "3bb1827de6771", appSecret: "c26b9a8b757a13041a38eecb4c759a54");
     }else{
      Flyverify.registerSDK(
                 appKey: "3a2c2a977d3d2", appSecret: "b89d2427a3bc7ad1aea1e1e8c1d36bf3");
                 Flyverify.toast('register');
     }
+    // 隐私协议
     _submitPrivacyStatus(true);
+
     Flyverify.preVerify(result: (Map? ret, Map? err) {
       if (err != null) {
         print('InitState PreVerify Failed: ${err.toString()}');
@@ -80,11 +83,12 @@ class _HomeState extends State<Home> {
               break;
             case GridViewWidgetMethodType.manualVerify: {
               isAuto = false;
-              FlyVerifyUIConfig config = _configAndroidUIConfig();
-              config.iOSConfig?.manualDismiss = true;
               if (Platform.isIOS){
+                FlyVerifyUIConfig config = _configIOSUIConfig();
+                config.iOSConfig?.manualDismiss = true;
                 _verify(config: config);
               } else if (Platform.isAndroid){
+                FlyVerifyUIConfig config = _configAndroidUIConfig();
                 Flyverify.autoFinishOAuthPage(flag: false);
                 _verify(config: config);
               }
@@ -731,6 +735,9 @@ class _HomeState extends State<Home> {
     void login(Map rt) async {
         if (Platform.isIOS){
             // 结果检验成功，进行网络请求
+            rt['phoneOperator'] = rt['operator'];
+            rt['appkey'] = '3bb1827de6771';
+            
             _doLoginWith(rt);
         }else{
             rt['phoneOperator'] = rt['operator'];

@@ -46,9 +46,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>mobappkey</key>
-	<string>moba6b6c6d6</string>
-	<key>mobappsecret</key>
-	<string>b89d2427a3bc7ad1aea1e1e8c1d36bf3</string>
+	<key>FlyVerifyKey</key>
+	<string>3bb1827de6771</string>
+	<key>FlyVerifySecret</key>
+	<string>c26b9a8b757a13041a38eecb4c759a54</string>
 </dict>
 </plist>
