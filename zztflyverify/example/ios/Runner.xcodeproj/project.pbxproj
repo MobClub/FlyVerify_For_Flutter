@@ -546,7 +546,7 @@
 					Flutter,
 					"-ObjC\n",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yyds.Secverify;
+				PRODUCT_BUNDLE_IDENTIFIER = com.okv.sdk.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -583,7 +583,7 @@
 					Flutter,
 					"-ObjC\n",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yyds.Secverify;
+				PRODUCT_BUNDLE_IDENTIFIER = com.okv.sdk.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
