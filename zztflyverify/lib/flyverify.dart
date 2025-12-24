@@ -165,9 +165,9 @@ class Flyverify {
               androidEventListener(event, null);
             }
           } else if (event['err'] != null) {
-            if (androidEventListener != null) {
+
               androidEventListener(null, event);
-            }
+
           }
           if (event['customViewClick'] != null) {
             if (customEventListener != null) {
