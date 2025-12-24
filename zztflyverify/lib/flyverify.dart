@@ -110,11 +110,11 @@ class Flyverify {
 
   static Future<dynamic>? verify(
       FlyVerifyUIConfig config,
-      FlyVerifyResultListener openAuthListener,
-      FlyVerifyResultListener cancelAuthPageListener,
-      FlyVerifyResultListener oneKeyLoginListener,
-      FlyVerifyResultListener customEventListener,
-      FlyVerifyResultListener androidEventListener) {
+      FlyVerifyResultListener? openAuthListener,
+      FlyVerifyResultListener? cancelAuthPageListener,
+      FlyVerifyResultListener? oneKeyLoginListener,
+      FlyVerifyResultListener? customEventListener,
+      FlyVerifyResultListener? androidEventListener) {
     final Map<String, dynamic> params = config.toJson();
 
     Future<dynamic>? callBack;
@@ -165,9 +165,9 @@ class Flyverify {
               androidEventListener(event, null);
             }
           } else if (event['err'] != null) {
-
+            if (androidEventListener != null) {
               androidEventListener(null, event);
-
+            }
           }
           if (event['customViewClick'] != null) {
             if (customEventListener != null) {
