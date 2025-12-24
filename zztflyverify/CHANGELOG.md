@@ -1,3 +1,5 @@
+## 1.0.5
+* update sdk version
 ## 1.0.4
 * 解决插件的android版本和开发者的android版本不兼容，编译会报错问题
 
