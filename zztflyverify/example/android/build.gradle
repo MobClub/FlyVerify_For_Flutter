@@ -5,6 +5,9 @@ allprojects {
         maven {
             url "https://mvn.zztfly.com/android"
         }
+        maven {
+            url "https://storage.googleapis.com/flutter_infra_release/download.flutter.io"
+        }
     }
 }
 
