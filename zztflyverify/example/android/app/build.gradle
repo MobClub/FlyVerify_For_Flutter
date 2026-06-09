@@ -38,7 +38,6 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources false// 关闭资源压缩,否则未使用的drawable编译后会空
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
             signingConfig signingConfigs.release
         }

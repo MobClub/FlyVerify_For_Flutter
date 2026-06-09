@@ -102,7 +102,10 @@ class _HomeState extends State<Home> {
               _showMobileVerifyAlert();
             }
               break;
-            break;
+            case GridViewWidgetMethodType.setCustomUi:
+            default: {
+              break;
+            }
           }
         },
         // color: Colors.white,
