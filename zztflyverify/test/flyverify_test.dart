@@ -3,19 +3,24 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flyverify_plugin/flyverify.dart';
 
 void main() {
-  const MethodChannel channel = MethodChannel('flyverify');
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  const MethodChannel channel =
+      MethodChannel('com.fly.flyverify.methodChannel');
 
   setUp(() {
-    channel.setMockMethodCallHandler((MethodCall methodCall) async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
       return '42';
     });
   });
 
   tearDown(() {
-    channel.setMockMethodCallHandler(null);
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, null);
   });
 
   test('getPlatformVersion', () async {
-    expect(await FlyVerify.platformVersion, '42');
+    expect(await Flyverify.platformVersion, '42');
   });
 }

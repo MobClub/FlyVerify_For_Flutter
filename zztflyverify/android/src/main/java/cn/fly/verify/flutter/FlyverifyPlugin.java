@@ -1,6 +1,10 @@
 package cn.fly.verify.flutter;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
@@ -21,6 +25,7 @@ import android.view.View;
 import java.util.HashMap;
 import java.util.Map;
 import java.lang.IllegalStateException;
+import java.security.MessageDigest;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.EventChannel;
@@ -105,6 +110,9 @@ public class FlyverifyPlugin implements FlutterPlugin,MethodCallHandler, EventCh
 			case "getVersion":
 				//版本号
 				getVersion(result);
+				break;
+			case "getAppSignature":
+				getAppSignature(result);
 				break;
 			case "secVerifyEnable":
 				//本地环境是否支持
@@ -506,6 +514,35 @@ public class FlyverifyPlugin implements FlutterPlugin,MethodCallHandler, EventCh
 			result.success(version);
 		}catch (IllegalStateException e) {
 
+		}
+	}
+
+	private void getAppSignature(Result result) {
+		try {
+			Context context = FlyVerify.getContext();
+			PackageManager packageManager = context.getPackageManager();
+			PackageInfo packageInfo;
+			Signature[] signatures;
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+				packageInfo = packageManager.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNING_CERTIFICATES);
+				signatures = packageInfo.signingInfo.getApkContentsSigners();
+			} else {
+				packageInfo = packageManager.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
+				signatures = packageInfo.signatures;
+			}
+			if (signatures == null || signatures.length == 0) {
+				result.success("");
+				return;
+			}
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			byte[] hash = digest.digest(signatures[0].toByteArray());
+			StringBuilder builder = new StringBuilder();
+			for (byte b : hash) {
+				builder.append(String.format("%02x", b));
+			}
+			result.success(builder.toString());
+		} catch (Throwable throwable) {
+			result.success("");
 		}
 	}
 

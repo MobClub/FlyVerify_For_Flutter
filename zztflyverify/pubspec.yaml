@@ -10,8 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  json_annotation: ^4.9.0
-  collection: ^1.19.1
+  json_annotation: '>=4.8.1 <5.0.0'
+  collection: '>=1.17.0 <2.0.0'
 
 dev_dependencies:
   flutter_test:
@@ -34,4 +34,7 @@ flutter:
         package: cn.fly.verify.flutter
         pluginClass: FlyverifyPlugin
       ios:
+        pluginClass: FlyverifyPlugin
+      ohos:
+        package: com.fly.flyverify
         pluginClass: FlyverifyPlugin

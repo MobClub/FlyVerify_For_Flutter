@@ -1,0 +1,46 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "debug",
+        "type": "HarmonyOS",
+        "material": {
+          "storeFile": "./DebugSigning/zztdebug.p12",
+          "storePassword": "00000019EF38D5465D8B78CFF219724661B4AEB67D57E7F3E20CC7906657D8778249CD1FDB72FA517E",
+          "keyAlias": "zzt",
+          "keyPassword": "00000019D91481CAD676ADEA203BCFF31AECB01EEAEBA1D2DE9B1695A30AB35F630E05D7721EE5D0D6",
+          "signAlg": "SHA256withECDSA",
+          "profile": "./DebugSigning/ZZTFLY-DEBUG-20260507Debug.p7b",
+          "certpath": "./DebugSigning/ZZT-DEBUG-20260507.cer"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "debug",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "useNormalizedOHMUrl": true
+          }
+        }
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}

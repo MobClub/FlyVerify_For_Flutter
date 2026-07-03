@@ -1,0 +1,16 @@
+{
+  "modelVersion": "5.0.0",
+  "name": "flyverify_plugin",
+  "version": "1.0.5",
+  "description": "Flutter plugin for FlyVerify on HarmonyOS.",
+  "main": "Index.ets",
+  "author": "zzt",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@ohos/flutter_ohos": "file:har/flutter.har",
+    "@zztsdk/zztcore": "*",
+    "@zztsdk/flyverify": "*"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}

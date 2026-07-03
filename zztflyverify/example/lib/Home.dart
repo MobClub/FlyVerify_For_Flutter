@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flyverify_plugin/flyverify.dart';
 import 'package:flyverify_plugin/flyverify_UIConfig.dart';
+import 'demo_config.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}): super(key: key);
@@ -21,6 +22,7 @@ class _HomeState extends State<Home> {
   bool _isSupport = false;
   late Map<String, String> _mobileAuthToken;
   bool isAuto = true;
+  bool get _isOhos => Platform.operatingSystem == 'ohos';
 
   @override
   void initState() {
@@ -30,10 +32,10 @@ class _HomeState extends State<Home> {
     // 初始化
     if (Platform.isIOS){
         Flyverify.registerSDK(
-            appKey: "3bb1827de6771", appSecret: "c26b9a8b757a13041a38eecb4c759a54");
+            appKey: DemoConfig.appKey, appSecret: DemoConfig.iosAppSecret);
     }else{
      Flyverify.registerSDK(
-                appKey: "3a2c2a977d3d2", appSecret: "b89d2427a3bc7ad1aea1e1e8c1d36bf3");
+                appKey: DemoConfig.appKey, appSecret: DemoConfig.androidOhosAppSecret);
                 Flyverify.toast('register');
     }
     // 隐私协议
@@ -73,7 +75,7 @@ class _HomeState extends State<Home> {
               if (Platform.isIOS){
                 FlyVerifyUIConfig config = _configIOSUIConfig();
                 _verify(config: config);
-              } else if (Platform.isAndroid){
+              } else if (Platform.isAndroid || _isOhos){
                 isAuto = true;
                 FlyVerifyUIConfig config = _configAndroidUIConfig();
                 Flyverify.autoFinishOAuthPage(flag: true);
@@ -87,7 +89,7 @@ class _HomeState extends State<Home> {
                 FlyVerifyUIConfig config = _configIOSUIConfig();
                 config.iOSConfig?.manualDismiss = true;
                 _verify(config: config);
-              } else if (Platform.isAndroid){
+              } else if (Platform.isAndroid || _isOhos){
                 FlyVerifyUIConfig config = _configAndroidUIConfig();
                 Flyverify.autoFinishOAuthPage(flag: false);
                 _verify(config: config);
@@ -208,7 +210,7 @@ class _HomeState extends State<Home> {
               }
             },
             (rt, err) {
-              if ((config.iOSConfig!.manualDismiss)) {
+              if (Platform.isIOS && (config.iOSConfig!.manualDismiss)) {
                 Flyverify.manualDismissLoading();
                 Flyverify.manualDismissLoginVC(flag: true).then((value) {
                   print('Manual Dismiss Loading VC Success');
@@ -739,13 +741,13 @@ class _HomeState extends State<Home> {
         if (Platform.isIOS){
             // 结果检验成功，进行网络请求
             rt['phoneOperator'] = rt['operator'];
-            rt['appkey'] = '3bb1827de6771';
+            rt['appkey'] = DemoConfig.appKey;
             
             _doLoginWith(rt);
         }else{
             rt['phoneOperator'] = rt['operator'];
-            rt['appkey'] = '3bb1827de6771';
-            rt['md5'] = 'b89d2427a3bc7ad1aea1e1e8c1d36bf3';
+            rt['appkey'] = DemoConfig.appKey;
+            rt['md5'] = await Flyverify.appSignature ?? '';
             androidLogin(rt);
         }
 

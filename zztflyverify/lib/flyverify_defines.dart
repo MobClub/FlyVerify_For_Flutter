@@ -54,4 +54,6 @@ class FlyVerifySDKMethods {
   static final FlyVerifySDKMethod toast =
       FlyVerifySDKMethod(name: 'toast', id: 18);
   static final FlyVerifySDKMethod register = FlyVerifySDKMethod(name: 'register', id: 19);
+  static final FlyVerifySDKMethod getAppSignature =
+      FlyVerifySDKMethod(name: 'getAppSignature', id: 20);
 }

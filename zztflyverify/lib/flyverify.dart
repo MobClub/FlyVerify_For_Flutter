@@ -10,6 +10,8 @@ class Flyverify {
   static const EventChannel _channelReceiver =
       const EventChannel('com.fly.flyverify.verifyEventChannel');
 
+  static bool get _isOhos => Platform.operatingSystem == 'ohos';
+
   static Future<void> registerSDK({String appKey = "", String appSecret = ""}) {
     final Map params = {'appKey': appKey, 'appSecret': appSecret};
     return _channel.invokeMethod(FlyVerifySDKMethods.register.name, params);
@@ -24,6 +26,11 @@ class Flyverify {
   static Future<String?> get platformVersion async {
     return await _channel
         .invokeMethod(FlyVerifySDKMethods.platformVersion.name);
+  }
+
+  static Future<String?> get appSignature async {
+    return await _channel
+        .invokeMethod(FlyVerifySDKMethods.getAppSignature.name);
   }
 
   static Future<dynamic> submitPrivacyGrantResult(
@@ -152,6 +159,19 @@ class Flyverify {
           oneKeyLoginListener(null, null);
         }
       });
+    } else if (_isOhos) {
+      callBack = _channel.invokeMethod(FlyVerifySDKMethods.verify.name, params);
+      callBack.then((dynamic response) {
+        if (response != null && response is Map) {
+          if (oneKeyLoginListener != null) {
+            oneKeyLoginListener(response['ret'], response['err']);
+          }
+        } else {
+          if (oneKeyLoginListener != null) {
+            oneKeyLoginListener(null, null);
+          }
+        }
+      });
     } else if (Platform.isAndroid) {
       _channel.invokeMethod(
           FlyVerifySDKMethods.setAndroidLandscapeLayout.name, params);
@@ -198,7 +218,7 @@ class Flyverify {
           }
         }
       });
-    } else if (Platform.isIOS) {
+    } else if (Platform.isIOS || _isOhos) {
       callBack.then((dynamic response) {
         if (response != null && response is Map) {
           result(response['ret'], response['err']);
