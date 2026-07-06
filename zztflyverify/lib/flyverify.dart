@@ -1,8 +1,12 @@
 import 'dart:io';
 import 'dart:async';
+import 'dart:convert';
 import 'flyverify_defines.dart';
 import 'flyverify_UIConfig.dart';
 import 'package:flutter/services.dart';
+
+typedef FlyVerifyOhosThemeEventListener = void Function(
+    String event, Map<String, dynamic>? data);
 
 class Flyverify {
   static const MethodChannel _channel =
@@ -11,6 +15,23 @@ class Flyverify {
       const EventChannel('com.fly.flyverify.verifyEventChannel');
 
   static bool get _isOhos => Platform.operatingSystem == 'ohos';
+  static FlyVerifyOhosThemeEventListener? _ohosThemeEventListener;
+
+  static void setOhosThemeEventListener(
+      FlyVerifyOhosThemeEventListener? listener) {
+    _ohosThemeEventListener = listener;
+    _channel.setMethodCallHandler((MethodCall call) async {
+      if (call.method == 'onOhosThemeEvent') {
+        final dynamic arguments = call.arguments;
+        if (arguments is Map) {
+          final String event = arguments['event']?.toString() ?? '';
+          final dynamic data = arguments['data'];
+          _ohosThemeEventListener?.call(
+              event, data is Map ? Map<String, dynamic>.from(data) : null);
+        }
+      }
+    });
+  }
 
   static Future<void> registerSDK({String appKey = "", String appSecret = ""}) {
     final Map params = {'appKey': appKey, 'appSecret': appSecret};
@@ -160,6 +181,10 @@ class Flyverify {
         }
       });
     } else if (_isOhos) {
+      final flatParams = config.ohosThemeConfig!.toJson();
+      final String themeJson = json.encode(flatParams);
+      print('FlyVerify flutter themeJson ' + themeJson);
+      final Map<String, dynamic> params = {'ohosThemeConfigJson': themeJson};
       callBack = _channel.invokeMethod(FlyVerifySDKMethods.verify.name, params);
       callBack.then((dynamic response) {
         if (response != null && response is Map) {

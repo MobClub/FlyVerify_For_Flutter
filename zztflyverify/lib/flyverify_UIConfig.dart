@@ -126,6 +126,7 @@ class FlyVerifyUIConfig {
   FlyVerifyUIConfigIOS? _iOSConfig;
   FlyVerifyUIConfigAndroid? _androidPortraitConfig;
   FlyVerifyUIConfigAndroid? _androidLandscapeConfig;
+  FlyVerifyUIConfigOhos? _ohosThemeConfig;
 
   FlyVerifyUIConfig() {}
   set iOSConfig(FlyVerifyUIConfigIOS? config) {
@@ -160,6 +161,15 @@ class FlyVerifyUIConfig {
       _androidLandscapeConfig = new FlyVerifyUIConfigAndroid();
     }
     return _androidLandscapeConfig;
+  }
+
+  set ohosThemeConfig(FlyVerifyUIConfigOhos? config) {
+    _ohosThemeConfig = config;
+  }
+
+  // 不再懒初始化：保留 setter 设置的真实值，避免被空对象覆盖导致数据丢失。
+  FlyVerifyUIConfigOhos? get ohosThemeConfig {
+    return _ohosThemeConfig;
   }
 
   factory FlyVerifyUIConfig.fromJson(Map<String, dynamic> json) =>
@@ -567,6 +577,155 @@ class FlyVerifyUIConfigAndroid {
   factory FlyVerifyUIConfigAndroid.fromJson(Map<String, dynamic> json) =>
       _$FlyVerifyUIConfigAndroidFromJson(json);
   Map<String, dynamic> toJson() => _$FlyVerifyUIConfigAndroidToJson(this);
+}
+
+class FlyVerifyOhosClauseSpan {
+  static const String normal = 'normal';
+  static const String operatorProtocol = 'operatorProtocol';
+  static const String customProtocol = 'customProtocol';
+
+  String? text;
+  String? type;
+  String? fontColor;
+  int? fontSize;
+  String? url;
+
+  FlyVerifyOhosClauseSpan({
+    this.text,
+    this.type,
+    this.fontColor,
+    this.fontSize,
+    this.url,
+  });
+
+  Map<String, dynamic> toJson() {
+    final val = <String, dynamic>{};
+
+    void writeNotNull(String key, dynamic value) {
+      if (value != null) {
+        val[key] = value;
+      }
+    }
+
+    writeNotNull('text', text);
+    writeNotNull('type', type);
+    writeNotNull('fontColor', fontColor);
+    writeNotNull('fontSize', fontSize);
+    writeNotNull('url', url);
+    return val;
+  }
+}
+
+class FlyVerifyUIConfigOhos {
+  Map<String, dynamic>? systemBarProperties;
+  int? numberSize;
+  String? numberColor;
+  Map<String, dynamic>? numberMargin;
+  Map<String, dynamic>? numberAlignRuleOption;
+
+  String? logBtnText;
+  int? loginBtnTextSize;
+  String? loginBtnTextColor;
+  String? loginBtnColor;
+  String? loginBtnImgPath;
+  int? loginBtnWidth;
+  int? loginBtnHeight;
+  Map<String, dynamic>? loginBtnMargin;
+  Map<String, dynamic>? loginBtnAlignRuleOption;
+  bool? checkedLoginListener;
+  bool? uncheckedLoginListener;
+  bool? uncheckedLoginAutoCheck;
+  int? loginBtnBorderRadius;
+  String? loginBtnBorderColor;
+  int? loginBtnBorderWidth;
+  String? loginBtnDisabledTextColor;
+  String? loginBtnDisabledColor;
+  String? loginBtnDisabledBorderColor;
+  int? loginBtnDisabledBorderWidth;
+  String? loginBtnDisabledImgPath;
+
+  int? checkBoxWidth;
+  int? checkBoxHeight;
+  Map<String, dynamic>? checkBoxMargin;
+  Map<String, dynamic>? checkBoxAlignRuleOption;
+  int? checkBoxShape;
+  bool? checkBoxChangeListener;
+
+  bool? clauseState;
+  List<FlyVerifyOhosClauseSpan>? clauses;
+  Map<String, dynamic>? clauseMargin;
+  Map<String, dynamic>? clauseAlignRuleOption;
+
+  int? navTextSize;
+  String? navTextColor;
+  String? navColor;
+  int? clauseNavMarginTop;
+  bool? webDomStorage;
+
+  bool? useDialogMode;
+  Map<String, dynamic>? dialogOptions;
+  bool? backPressedListener;
+  bool? backPressedAutoClose;
+  bool? compatFullScreen;
+
+  FlyVerifyUIConfigOhos() {}
+
+  Map<String, dynamic> toJson() {
+    final val = <String, dynamic>{};
+
+    void writeNotNull(String key, dynamic value) {
+      if (value != null) {
+        val[key] = value;
+      }
+    }
+
+    writeNotNull('systemBarProperties', systemBarProperties);
+    writeNotNull('numberSize', numberSize);
+    writeNotNull('numberColor', numberColor);
+    writeNotNull('numberMargin', numberMargin);
+    writeNotNull('numberAlignRuleOption', numberAlignRuleOption);
+    writeNotNull('logBtnText', logBtnText);
+    writeNotNull('loginBtnTextSize', loginBtnTextSize);
+    writeNotNull('loginBtnTextColor', loginBtnTextColor);
+    writeNotNull('loginBtnColor', loginBtnColor);
+    writeNotNull('loginBtnImgPath', loginBtnImgPath);
+    writeNotNull('loginBtnWidth', loginBtnWidth);
+    writeNotNull('loginBtnHeight', loginBtnHeight);
+    writeNotNull('loginBtnMargin', loginBtnMargin);
+    writeNotNull('loginBtnAlignRuleOption', loginBtnAlignRuleOption);
+    writeNotNull('checkedLoginListener', checkedLoginListener);
+    writeNotNull('uncheckedLoginListener', uncheckedLoginListener);
+    writeNotNull('uncheckedLoginAutoCheck', uncheckedLoginAutoCheck);
+    writeNotNull('loginBtnBorderRadius', loginBtnBorderRadius);
+    writeNotNull('loginBtnBorderColor', loginBtnBorderColor);
+    writeNotNull('loginBtnBorderWidth', loginBtnBorderWidth);
+    writeNotNull('loginBtnDisabledTextColor', loginBtnDisabledTextColor);
+    writeNotNull('loginBtnDisabledColor', loginBtnDisabledColor);
+    writeNotNull('loginBtnDisabledBorderColor', loginBtnDisabledBorderColor);
+    writeNotNull('loginBtnDisabledBorderWidth', loginBtnDisabledBorderWidth);
+    writeNotNull('loginBtnDisabledImgPath', loginBtnDisabledImgPath);
+    writeNotNull('checkBoxWidth', checkBoxWidth);
+    writeNotNull('checkBoxHeight', checkBoxHeight);
+    writeNotNull('checkBoxMargin', checkBoxMargin);
+    writeNotNull('checkBoxAlignRuleOption', checkBoxAlignRuleOption);
+    writeNotNull('checkBoxShape', checkBoxShape);
+    writeNotNull('checkBoxChangeListener', checkBoxChangeListener);
+    writeNotNull('clauseState', clauseState);
+    writeNotNull('clauses', clauses?.map((e) => e.toJson()).toList());
+    writeNotNull('clauseMargin', clauseMargin);
+    writeNotNull('clauseAlignRuleOption', clauseAlignRuleOption);
+    writeNotNull('navTextSize', navTextSize);
+    writeNotNull('navTextColor', navTextColor);
+    writeNotNull('navColor', navColor);
+    writeNotNull('clauseNavMarginTop', clauseNavMarginTop);
+    writeNotNull('webDomStorage', webDomStorage);
+    writeNotNull('useDialogMode', useDialogMode);
+    writeNotNull('dialogOptions', dialogOptions);
+    writeNotNull('backPressedListener', backPressedListener);
+    writeNotNull('backPressedAutoClose', backPressedAutoClose);
+    writeNotNull('compatFullScreen', compatFullScreen);
+    return val;
+  }
 }
 
 // @JsonSerializable(explicitToJson: true, includeIfNull: false)

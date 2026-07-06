@@ -35,6 +35,7 @@ Map<String, dynamic> _$FlyVerifyUIConfigToJson(FlyVerifyUIConfig instance) {
       'androidPortraitConfig', instance.androidPortraitConfig?.toJson());
   writeNotNull(
       'androidLandscapeConfig', instance.androidLandscapeConfig?.toJson());
+  writeNotNull('ohosThemeConfig', instance._ohosThemeConfig?.toJson());
   return val;
 }
 

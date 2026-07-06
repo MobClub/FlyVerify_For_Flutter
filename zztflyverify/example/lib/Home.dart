@@ -28,6 +28,11 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
                 Flyverify.toast('initState');
+    if (_isOhos) {
+      Flyverify.setOhosThemeEventListener((event, data) {
+        print('FlyVerify flutter event: $event, data: $data');
+      });
+    }
 
     // 初始化
     if (Platform.isIOS){
@@ -75,9 +80,14 @@ class _HomeState extends State<Home> {
               if (Platform.isIOS){
                 FlyVerifyUIConfig config = _configIOSUIConfig();
                 _verify(config: config);
-              } else if (Platform.isAndroid || _isOhos){
+              } else if (Platform.isAndroid){
                 isAuto = true;
                 FlyVerifyUIConfig config = _configAndroidUIConfig();
+                Flyverify.autoFinishOAuthPage(flag: true);
+                _verify(config: config);
+              } else if (_isOhos){
+                isAuto = true;
+                FlyVerifyUIConfig config = _configOhosUIConfig();
                 Flyverify.autoFinishOAuthPage(flag: true);
                 _verify(config: config);
               }
@@ -89,8 +99,12 @@ class _HomeState extends State<Home> {
                 FlyVerifyUIConfig config = _configIOSUIConfig();
                 config.iOSConfig?.manualDismiss = true;
                 _verify(config: config);
-              } else if (Platform.isAndroid || _isOhos){
+              } else if (Platform.isAndroid){
                 FlyVerifyUIConfig config = _configAndroidUIConfig();
+                Flyverify.autoFinishOAuthPage(flag: false);
+                _verify(config: config);
+              } else if (_isOhos){
+                FlyVerifyUIConfig config = _configOhosUIConfig();
                 Flyverify.autoFinishOAuthPage(flag: false);
                 _verify(config: config);
               }
@@ -104,7 +118,6 @@ class _HomeState extends State<Home> {
               _showMobileVerifyAlert();
             }
               break;
-            case GridViewWidgetMethodType.setCustomUi:
             default: {
               break;
             }
@@ -304,6 +317,92 @@ class _HomeState extends State<Home> {
     return config;
   }
 
+  FlyVerifyUIConfig _configOhosUIConfig() {
+    FlyVerifyUIConfig config = FlyVerifyUIConfig();
+    config.ohosThemeConfig = _buildOhosTheme();
+    return config;
+  }
+
+  FlyVerifyUIConfigOhos _buildOhosTheme() {
+    FlyVerifyUIConfigOhos theme = FlyVerifyUIConfigOhos();
+    theme.compatFullScreen = true;
+    theme.systemBarProperties = {
+      'statusBarColor': '#0B6B61',
+      'isStatusBarLightIcon': false,
+      'navigationBarColor': '#FFFFFF',
+      'isNavigationBarLightIcon': true,
+    };
+    theme.navColor = '#0B6B61';
+    theme.navTextColor = '#FFFFFF';
+    theme.navTextSize = 26;
+
+    theme.numberColor = '#111827';
+    theme.numberSize = 42;
+    theme.numberMargin = {'top': 100};
+
+    theme.logBtnText = '本机号码一键登录';
+    theme.loginBtnTextColor = '#00FFFF';
+    theme.loginBtnTextSize = 46;
+    theme.loginBtnColor = '#0EA5A4';
+    theme.loginBtnWidth = 320;
+    theme.loginBtnHeight = 48;
+    theme.loginBtnMargin = {'top': 220};
+    theme.loginBtnBorderRadius = 24;
+    theme.loginBtnBorderColor = '#0F766E';
+    theme.loginBtnBorderWidth = 1;
+    theme.loginBtnDisabledTextColor = '#D1D5DB';
+    theme.loginBtnDisabledColor = '#9CA3AF';
+    theme.checkedLoginListener = true;
+    theme.checkBoxChangeListener = true;
+    theme.backPressedListener = true;
+
+    theme.clauseState = true;
+    theme.checkBoxWidth = 18;
+    theme.checkBoxHeight = 18;
+    theme.checkBoxMargin = {'left': 24, 'bottom': 36};
+    //0圆，1方
+    theme.checkBoxShape = 0;
+
+    theme.clauseMargin = {'left': 48, 'right': 24, 'bottom': 32};
+    theme.clauses = [
+      FlyVerifyOhosClauseSpan(
+        text: '登录即同意',
+        type: FlyVerifyOhosClauseSpan.normal,
+        fontColor: '#6B7280',
+        fontSize: 12,
+      ),
+      FlyVerifyOhosClauseSpan(
+        type: FlyVerifyOhosClauseSpan.operatorProtocol,
+        fontColor: '#0EA5A4',
+        fontSize: 12,
+      ),
+      FlyVerifyOhosClauseSpan(
+        text: '和',
+        type: FlyVerifyOhosClauseSpan.normal,
+        fontColor: '#6B7280',
+        fontSize: 12,
+      ),
+      FlyVerifyOhosClauseSpan(
+        text: 'Mob服务协议',
+        type: FlyVerifyOhosClauseSpan.customProtocol,
+        fontColor: '#0EA5A4',
+        fontSize: 12,
+        url: 'https://www.mob.com/about/policy',
+      ),
+      FlyVerifyOhosClauseSpan(
+        text: '并授权使用本机号码登录',
+        type: FlyVerifyOhosClauseSpan.normal,
+        fontColor: '#6B7280',
+        fontSize: 12,
+      ),
+    ];
+
+    theme.clauseNavMarginTop = 8;
+    theme.webDomStorage = true;
+    theme.useDialogMode = false;
+    print('FlyVerify flutter create theme: ${theme.toJson()}');
+    return theme;
+  }
   void _customizeAndroidUiExample(FlyVerifyUIConfig config){
     //portrait
 //标题栏
@@ -782,8 +881,7 @@ enum GridViewWidgetMethodType {
   autoVerify,
   manualVerify,
   preMobileAuth,
-  mobileAuthVerify,
-  setCustomUi
+  mobileAuthVerify
 }
 
 class GridViewWidget {

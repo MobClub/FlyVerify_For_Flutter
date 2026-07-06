@@ -1,93 +1,218 @@
-# Flyverify For Flutter
+# FlyVerify Flutter 插件
 
-### 运营商网关取号，一秒验证手机号
+秒验 Flutter 插件，支持 Android、iOS、HarmonyOS。
 
-**支持的原生SDK版本**
+## 安装
 
-- [Android](https://github.com/MobClub/Flyverify-for-Android) - V2.1.0
-- [iOS](https://github.com/MobClub/Flyverify-for-iOS) - V3.1.6
+发布版本：
 
-**简介：** http://www.mob.com/product/Flyverify
-
-**插件主页：** https://pub.dartlang.org/packages/Flyverify_plugin
-
-**官网文档：** https://www.mob.com/wiki/detailed?wiki=miaoyan_chanpinjianjie&id=78
-
-1.Flutter集成文档 [Flyverify-For-Flutter 在线文档](https://pub.dartlang.org/packages/Flyverify#-installing-tab-)
-2.iOS平台配置参考 [iOS集成文档](http://wiki.mob.com/快速集成-11/)
-
-- 实现 "一、注册应用获取appKey 和 appSecret"
-- 实现 "三、配置appkey和appSecret"
-
-3.Android平台集成
-
-#####导入SMSSDK相关依赖
-1. 在项目根目录的build.gradle中添加以下代码：
-
-```
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
-
-    }
-```
-2. 在/android/app/build.gradle中添加以下代码：
-
-```
-apply plugin: 'com.android.application'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-
-```
-3. 在根路径下的pubspec.yaml文件中添加Flyverify flutter插件：
-
-```
+```yaml
 dependencies:
-  Flyverify_plugin:^1.0.4
+  flyverify_plugin: ^1.1.9
 ```
 
-在你项目的Dart中添加以下代码：
+本地调试：
 
+```yaml
+dependencies:
+  flyverify_plugin:
+    path: ../zztflyverify
 ```
- import 'package:Flyverify_plugin/Flyverify.dart'
-```
-这样，就可以使用plugin中定义的dart api了。
 
-4. 平台相关集成
-在项目的/android/app/build.gradle中添加:
+## 初始化
 
-```
-android {
-    // lines skipped
-    dependencies {
-        provided rootProject.findProject(":zztflyverify")
-    }
+```dart
+import 'dart:io';
+import 'package:flyverify_plugin/flyverify.dart';
+
+Future<void> initFlyVerify() async {
+  await Flyverify.registerSDK(
+    appKey: '你的 appKey',
+    appSecret: Platform.isIOS ? '你的 iOS appSecret' : '你的 Android/HarmonyOS appSecret',
+  );
+  await Flyverify.submitPrivacyGrantResult(true, null);
 }
 ```
 
-这样就可以在你的`project/android/src`下的类中`import com.mob.flutter.Flyverify.FlyverifyPlugin`并使用`FlyverifyPlugin`中的api了。
+## HarmonyOS 鸿蒙使用
 
-######添加代码
-1. 在MainActivity的onCreate中添加以下代码：
+鸿蒙平台需要使用支持 HarmonyOS 的 Flutter SDK，例如 `flutter_flutter`。鸿蒙主题配置独立使用 `FlyVerifyUIConfigOhos`，字段按鸿蒙原生 `ThemeConfig` 命名，不复用 Android 的 `FlyVerifyUIConfigAndroid`。
 
+### 插件开发者本地验证
+
+在当前插件项目根目录执行：
+
+```powershell
+D:\Software\harmony_flutter\flutter_flutter\bin\flutter.bat pub get
+D:\Software\harmony_flutter\flutter_flutter\bin\flutter.bat analyze lib example/lib
 ```
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    GeneratedPluginRegistrant.registerWith(this);
-    // 注册Flyverify Flutter插件
-    FlyverifyPlugin.registerWith(registrarFor(FlyverifyPlugin.CHANNEL));
-    // 初始化Flyverify
-    FlyverifyPlugin.init(this, APPKEY, APPSECRET);
-  }
+
+`analyze` 用于检查 Dart 层 API 和 example 是否有语法错误。当前项目存在一些历史 lint/info，非鸿蒙主题功能错误。
+
+### 编译鸿蒙插件 HAR
+
+当前插件的 `ohos` 目录不是完整 hvigor workspace，没有内置 `hvigorw.bat`。本地验证时通过 example 的鸿蒙工程构建，Flutter 会解析本地 path 插件并自动编译 HAR：
+
+```powershell
+cd example
+D:\Software\harmony_flutter\flutter_flutter\bin\flutter.bat build hap
+```
+
+产物位置：
+
+```text
+ohos\build\default\outputs\default\flyverify_plugin.har
+example\ohos\har\flyverify_plugin.har
+```
+
+### 设置鸿蒙主题
+
+```dart
+import 'package:flyverify_plugin/flyverify.dart';
+import 'package:flyverify_plugin/flyverify_UIConfig.dart';
+
+FlyVerifyUIConfigOhos buildOhosTheme() {
+  final theme = FlyVerifyUIConfigOhos();
+  theme.compatFullScreen = true;
+  theme.systemBarProperties = {
+    'statusBarColor': '#0B6B61',
+    'isStatusBarLightIcon': false,
+    'navigationBarColor': '#FFFFFF',
+    'isNavigationBarLightIcon': true,
+  };
+  theme.navColor = '#0B6B61';
+  theme.navTextColor = '#FFFFFF';
+  theme.navTextSize = 16;
+
+  theme.numberColor = '#111827';
+  theme.numberSize = 42;
+  theme.numberMargin = {'top': 120};
+
+  theme.logBtnText = '本机号码一键登录';
+  theme.loginBtnTextColor = '#FFFFFF';
+  theme.loginBtnTextSize = 46;
+  theme.loginBtnColor = '#0EA5A4';
+  theme.loginBtnWidth = 320;
+  theme.loginBtnHeight = 48;
+  theme.loginBtnMargin = {'top': 220};
+  theme.loginBtnBorderRadius = 24;
+
+  theme.clauseState = true;
+  theme.checkBoxWidth = 18;
+  theme.checkBoxHeight = 18;
+  theme.checkBoxMargin = {'left': 24, 'bottom': 36};
+  theme.checkBoxShape = 'rounded_square';
+  theme.clauseMargin = {'left': 48, 'right': 24, 'bottom': 32};
+  theme.clauses = [
+    FlyVerifyOhosClauseSpan(
+      text: '登录即同意',
+      type: FlyVerifyOhosClauseSpan.normal,
+      fontColor: '#6B7280',
+      fontSize: 12,
+    ),
+    FlyVerifyOhosClauseSpan(
+      type: FlyVerifyOhosClauseSpan.operatorProtocol,
+      fontColor: '#0EA5A4',
+      fontSize: 12,
+    ),
+    FlyVerifyOhosClauseSpan(
+      text: '和',
+      type: FlyVerifyOhosClauseSpan.normal,
+      fontColor: '#6B7280',
+      fontSize: 12,
+    ),
+    FlyVerifyOhosClauseSpan(
+      text: 'Mob服务协议',
+      type: FlyVerifyOhosClauseSpan.customProtocol,
+      fontColor: '#0EA5A4',
+      fontSize: 12,
+      url: 'https://www.mob.com/about/policy',
+    ),
+  ];
+
+  theme.webDomStorage = true;
+  theme.useDialogMode = false;
+  return theme;
+}
+```
+
+单独设置主题：
+
+```dart
+await Flyverify.setOhosTheme(buildOhosTheme().toJson());
+```
+
+拉起登录验证时传入主题：
+
+```dart
+final config = FlyVerifyUIConfig();
+config.ohosThemeConfig = buildOhosTheme();
+
+Flyverify.autoFinishOAuthPage(flag: true);
+Flyverify.verify(
+  config,
+  null,
+  null,
+  (ret, err) {
+    if (ret != null) {
+      print('verify success: $ret');
+    } else {
+      print('verify failed: $err');
+    }
+  },
+  null,
+  null,
+);
+```
+
+### 鸿蒙主题回调
+
+原生鸿蒙 `ThemeConfig` 中的部分 listener 已通过事件桥转给 Dart：
+
+```dart
+Flyverify.setOhosThemeEventListener((event, data) {
+  print('Ohos theme event: $event, data: $data');
+});
+```
+
+当前事件名：
+
+```text
+checkedLoginStart
+checkedLoginComplete
+uncheckedLogin
+checkBoxChanged
+backPressed
+```
+
+其中 `uncheckedLoginListener` 和 `backPressedListener` 需要原生侧同步返回处理结果，Flutter 通过配置项控制默认行为：
+
+```dart
+theme.uncheckedLoginListener = true;
+theme.uncheckedLoginAutoCheck = true;
+theme.backPressedListener = true;
+theme.backPressedAutoClose = true;
+```
+
+### 构建 HAP
+
+```powershell
+cd example
+D:\Software\harmony_flutter\flutter_flutter\bin\flutter.bat pub get
+D:\Software\harmony_flutter\flutter_flutter\bin\flutter.bat build hap
+```
+
+HAP 产物位置：
+
+```text
+example\ohos\entry\build\default\outputs\default\entry-default-signed.hap
 ```
 
 ## 技术支持
-如有问题请联系技术支持:
-```
-服务电话:   400-685-2216
-QQ:        4006852216
-节假日值班电话:
-    iOS：185-1664-1951
-Android: 185-1664-1950
-电子邮箱:   support@mob.com
-市场合作:   021-54623100
+
+```text
+服务电话: 400-685-2216
+QQ: 4006852216
+电子邮箱: support@mob.com
+市场合作: 021-54623100
 ```
