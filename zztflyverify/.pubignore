@@ -1,2 +1,9 @@
 # .pubignore
 .idea/
+dist/
+tmp-sign-check/
+example/ohos/DebugSigning/
+example/ohos/**/build/
+example/ohos/oh_modules/
+example/ohos/oh-package-lock.json5
+example/ios/Flutter/ephemeral/
