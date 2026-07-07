@@ -36,7 +36,7 @@ Future<void> initFlyVerify() async {
 
 ## HarmonyOS 鸿蒙使用
 
-鸿蒙平台需要使用支持 HarmonyOS 的 Flutter SDK，例如 `flutter_flutter`。鸿蒙主题配置独立使用 `FlyVerifyUIConfigOhos`，字段按鸿蒙原生 `ThemeConfig` 命名，不复用 Android 的 `FlyVerifyUIConfigAndroid`。
+鸿蒙平台需要使用支持 HarmonyOS 的 Flutter SDK，例如 `flutter_flutter`。
 
 ### 鸿蒙 Flutter 环境
 
@@ -71,6 +71,7 @@ dependencies:
 源码 module 集成（开发态）：
 
 ```jsonc
+// example/ohos/entry/oh-package.json5
 {
   "dependencies": {
     "flyverify_plugin": "file:../../../zztflyverify/ohos"
@@ -89,37 +90,43 @@ dependencies:
 }
 ```
 
-#### 3. 修改 `Index.ets`，确保 `eventHub` 监听返回事件
+#### 3. 入口能力与 Flutter Page
 
-鸿蒙侧默认会把"返回键"事件转发到 Flutter：
+`EntryAbility.ets`：
 
 ```ets
-const EVENT_BACK_PRESS = 'EVENT_BACK_PRESS'
+import { FlutterAbility, FlutterEngine } from '@ohos/flutter_ohos';
+import { GeneratedPluginRegistrant } from '../plugins/GeneratedPluginRegistrant';
+
+export default class EntryAbility extends FlutterAbility {
+  configureFlutterEngine(flutterEngine: FlutterEngine) {
+    super.configureFlutterEngine(flutterEngine)
+    GeneratedPluginRegistrant.registerWith(flutterEngine)
+  }
+}
+```
+
+`pages/Index.ets` 用 `FlutterPage` 渲染 Flutter UI 即可：
+
+```ets
+import { FlutterPage } from '@ohos/flutter_ohos';
 
 @Entry(storage)
 @Component
 struct Index {
-  private context = getContext(this) as common.UIAbilityContext
-  @LocalStorageLink('viewId') viewId: string = ''
+  @LocalStorageLink('viewId') viewId: string = '';
 
   build() {
     Column() {
       FlutterPage({ viewId: this.viewId })
     }
   }
-
-  onBackPress(): boolean {
-    this.context.eventHub.emit(EVENT_BACK_PRESS)
-    return true
-  }
 }
 ```
 
-> Flutter 端消费 `EVENT_BACK_PRESS` 时请调用 `Navigator.pop`；不消费则本事件被吞，不会触发 OS 默认 back。
-
 #### 4. 权限
 
-`example/ohos/entry/src/main/module.json5` 中已声明：
+`example/ohos/entry/src/main/module.json5` 中需声明：
 
 ```jsonc
 "requestPermissions": [
@@ -128,126 +135,45 @@ struct Index {
 ]
 ```
 
-### 设置鸿蒙主题
+### 预取号与取号
+
+秒验主要功能调用流程：
 
 ```dart
 import 'package:flyverify_plugin/flyverify.dart';
-import 'package:flyverify_plugin/flyverify_UIConfig.dart';
 
-FlyVerifyUIConfigOhos buildOhosTheme() {
-  final theme = FlyVerifyUIConfigOhos();
-  theme.navColor = '#0B6B61';
-  theme.navTextColor = '#FFFFFF';
-  theme.navTextSize = 16;
+// 1. 注册 SDK
+await Flyverify.registerSDK(appKey: '你的 appKey', appSecret: '你的 appSecret');
 
-  theme.numberColor = '#111827';
-  theme.numberSize = 42;
-  theme.numberMargin = {'top': 120};
+// 2. 提交隐私协议授权
+await Flyverify.submitPrivacyGrantResult(true, null);
 
-  theme.logBtnText = '本机号码一键登录';
-  theme.loginBtnTextColor = '#FFFFFF';
-  theme.loginBtnTextSize = 46;
-  theme.loginBtnColor = '#0EA5A4';
-  theme.loginBtnWidth = 320;
-  theme.loginBtnHeight = 48;
-  theme.loginBtnMargin = {'top': 220};
+// 3. 预取号（建议在拉起授权页之前调用，以提高登录成功率）
+Flyverify.preVerify(result: (Map? ret, Map? err) {
+  if (err == null && ret != null) {
+    // 预取号成功，可继续拉起授权页
+  }
+});
 
-  theme.checkBoxWidth = 18;
-  theme.checkBoxHeight = 18;
-  theme.checkBoxMargin = {'left': 24, 'bottom': 36};
-  theme.clauses = [
-    FlyVerifyOhosClauseSpan(
-      text: '登录即同意',
-      type: FlyVerifyOhosClauseSpan.normal,
-      fontColor: '#6B7280',
-      fontSize: 12,
-    ),
-    FlyVerifyOhosClauseSpan(
-      type: FlyVerifyOhosClauseSpan.operatorProtocol,
-      fontColor: '#0EA5A4',
-      fontSize: 12,
-    ),
-    FlyVerifyOhosClauseSpan(
-      text: '和',
-      type: FlyVerifyOhosClauseSpan.normal,
-      fontColor: '#6B7280',
-      fontSize: 12,
-    ),
-    FlyVerifyOhosClauseSpan(
-      text: 'Mob服务协议',
-      type: FlyVerifyOhosClauseSpan.customProtocol,
-      fontColor: '#0EA5A4',
-      fontSize: 12,
-      url: 'https://www.mob.com/about/policy',
-    ),
-  ];
-  return theme;
-}
-```
-
-拉起登录验证时传入主题：
-
-```dart
-final config = FlyVerifyUIConfig();
-config.ohosThemeConfig = buildOhosTheme();
-
-Flyverify.autoFinishOAuthPage(flag: true);
-Flyverify.verify(
-  config,
+// 4. 一键登录（拉起授权页 → 运营商取号 → 返回结果）
+await Flyverify.verify(
+  FlyVerifyUIConfig(),
   null,
   null,
   (ret, err) {
     if (ret != null) {
-      print('verify success: $ret');
-    } else {
-      print('verify failed: $err');
+      // 取号成功，ret 中含手机号 / 运营商 / token
+    } else if (err != null) {
+      // 取号失败或用户取消
     }
   },
   null,
   null,
 );
+
 ```
 
-### 鸿蒙主题回调
-
-原生鸿蒙 `ThemeConfig` 中的部分 listener 已通过事件桥转给 Dart：
-
-```dart
-Flyverify.setOhosThemeEventListener((event, data) {
-  print('Ohos theme event: $event, data: $data');
-});
-```
-
-当前事件名：
-
-```text
-checkedLoginStart
-checkedLoginComplete
-uncheckedLogin
-checkBoxChanged
-backPressed
-```
-
-其中 `uncheckedLoginListener` 和 `backPressedListener` 需要原生侧同步返回处理结果，Flutter 通过配置项控制默认行为：
-
-```dart
-theme.uncheckedLoginListener = true;
-theme.uncheckedLoginAutoCheck = true;
-theme.backPressedListener = true;
-theme.backPressedAutoClose = true;
-```
-
-### 拉起授权页模式
-
-鸿蒙 SDK 内部根据 `theme.useDialogMode` 决定是走 `router.pushNamedRoute` 跳 `opAuthPage`，还是走 `OpenCustomAuthDialog.openDialog()` 弹窗。**`flyverify_plugin` 在 dart 层自动将 `config.ohosThemeConfig!.useDialogMode = true`**——这是为了避免 demo 工程未在 `pages/main_pages.json` 注册 `opAuthPage` 路由时，按返回键系统直接退到桌面。
-
-如果你已显式注册授权页路由，希望回到 router 模式，可以：
-
-```dart
-config.ohosThemeConfig!.useDialogMode = false;
-```
-
-> 此时务必在你的鸿蒙工程的 `pages/main_pages.json` 与 `module.json5.pages` 中注册名为 `opAuthPage` 的 `@Entry` Page，否则按返回键会被系统当作"无路由可退，回到桌面"。
+> 本版本专注于秒验主链路：预取号、取号。鸿蒙主题配置 API（`FlyVerifyUIConfigOhos` / 主题事件回调）将在后续版本提供。
 
 ### 构建 HAP
 
