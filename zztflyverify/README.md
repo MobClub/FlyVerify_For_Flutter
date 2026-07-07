@@ -73,13 +73,6 @@ import 'package:flyverify_plugin/flyverify_UIConfig.dart';
 
 FlyVerifyUIConfigOhos buildOhosTheme() {
   final theme = FlyVerifyUIConfigOhos();
-  theme.compatFullScreen = true;
-  theme.systemBarProperties = {
-    'statusBarColor': '#0B6B61',
-    'isStatusBarLightIcon': false,
-    'navigationBarColor': '#FFFFFF',
-    'isNavigationBarLightIcon': true,
-  };
   theme.navColor = '#0B6B61';
   theme.navTextColor = '#FFFFFF';
   theme.navTextSize = 16;
@@ -95,14 +88,10 @@ FlyVerifyUIConfigOhos buildOhosTheme() {
   theme.loginBtnWidth = 320;
   theme.loginBtnHeight = 48;
   theme.loginBtnMargin = {'top': 220};
-  theme.loginBtnBorderRadius = 24;
-
-  theme.clauseState = true;
+  
   theme.checkBoxWidth = 18;
   theme.checkBoxHeight = 18;
   theme.checkBoxMargin = {'left': 24, 'bottom': 36};
-  theme.checkBoxShape = 'rounded_square';
-  theme.clauseMargin = {'left': 48, 'right': 24, 'bottom': 32};
   theme.clauses = [
     FlyVerifyOhosClauseSpan(
       text: '登录即同意',
@@ -129,17 +118,8 @@ FlyVerifyUIConfigOhos buildOhosTheme() {
       url: 'https://www.mob.com/about/policy',
     ),
   ];
-
-  theme.webDomStorage = true;
-  theme.useDialogMode = false;
   return theme;
 }
-```
-
-单独设置主题：
-
-```dart
-await Flyverify.setOhosTheme(buildOhosTheme().toJson());
 ```
 
 拉起登录验证时传入主题：
@@ -202,11 +182,6 @@ D:\Software\harmony_flutter\flutter_flutter\bin\flutter.bat pub get
 D:\Software\harmony_flutter\flutter_flutter\bin\flutter.bat build hap
 ```
 
-HAP 产物位置：
-
-```text
-example\ohos\entry\build\default\outputs\default\entry-default-signed.hap
-```
 
 ## 技术支持
 

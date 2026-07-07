@@ -181,6 +181,12 @@ class Flyverify {
         }
       });
     } else if (_isOhos) {
+      // 鸿蒙端默认走 dialog 模式，避免 router.pushNamedRoute('opAuthPage')
+      // 在 example 工程未注册该路由时按返回键直接回到桌面。
+      if (config.ohosThemeConfig == null) {
+        config.ohosThemeConfig = FlyVerifyUIConfigOhos();
+      }
+      config.ohosThemeConfig!.useDialogMode = true;
       final flatParams = config.ohosThemeConfig!.toJson();
       final String themeJson = json.encode(flatParams);
       print('FlyVerify flutter themeJson ' + themeJson);
