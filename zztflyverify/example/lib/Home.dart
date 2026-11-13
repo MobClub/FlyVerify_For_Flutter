@@ -59,7 +59,6 @@ class _HomeState extends State<Home> {
       GridViewWidget(GridViewWidgetMethodType.autoVerify, '登录验证_自动关闭'),
       GridViewWidget(GridViewWidgetMethodType.manualVerify, '登录验证_手动关闭'),
       GridViewWidget(GridViewWidgetMethodType.preMobileAuth, '本机认证_预请求'),
-      GridViewWidget(GridViewWidgetMethodType.mobileAuthVerify, '本机认证'),
     ];
     return list.map((item) => getItemContainer(item)).toList();
   }
@@ -112,10 +111,6 @@ class _HomeState extends State<Home> {
               break;
             case GridViewWidgetMethodType.preMobileAuth: {
               _mobileAuth(context);
-            }
-              break;
-            case GridViewWidgetMethodType.mobileAuthVerify: {
-              _showMobileVerifyAlert();
             }
               break;
             default: {
@@ -275,36 +270,6 @@ class _HomeState extends State<Home> {
                 }
               }
             });
-  }
-
-  void _mobileVerify(String phoneNum, BuildContext context) {
-    if (phoneNum == null || phoneNum.length == 0) {
-      _showAlert('本机认证手机号码不能为空');
-      return;
-    }
-
-    if (_mobileAuthToken == null) {
-      _showAlert('进行本机认证操作前，请先请求Token');
-      return;
-    }
-    Flyverify.mobileVerify(phoneNum: phoneNum, tokenInfo: _mobileAuthToken, result: (Map? ret, Map? err) {
-      // 本机认证结果处理
-          if (ret != null && err == null) {
-            String resultStr = ret.toString();
-            if (resultStr.length != 0 &&
-                resultStr.contains('isValid') &&
-                resultStr.contains('valid')) {
-              // 结果检验成功，进行网络请求
-              _showAlert(resultStr);
-            } else {
-              _showAlert('本机认证失败 $resultStr');
-            }
-          } else if (err != null) {
-            _showAlert(err.toString());
-          } else {
-            _showAlert('本机认证失败');
-          }
-    });
   }
 
   FlyVerifyUIConfig _configUIConfig() {
@@ -722,48 +687,6 @@ class _HomeState extends State<Home> {
         )
     );
   }
-
-  final _textEditVC = TextEditingController();
-  void _showMobileVerifyAlert() {
-    if (Platform.isAndroid){
-      _showAlert('Android Flyverify not support mobileAuth now');
-    } else {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: new Text('请输入手机号码:'),
-          content: new TextField(
-            controller: _textEditVC,
-            keyboardType: TextInputType.phone,
-            textInputAction: TextInputAction.done,
-            autofocus: true,
-            maxLength: 11,
-            maxLengthEnforcement: MaxLengthEnforcement.enforced,
-          ),
-          actions: <Widget>[
-            new TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  final _phoneNum = _textEditVC.text;
-                  if (_phoneNum.length == 11) {
-                    _mobileVerify(_phoneNum, context);
-                  } else {
-                    _showAlert('输入的手机号非法,请确认后输入!');
-                  }
-                },
-                child: new Text('OK')
-            ),
-            new TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: new Text('Cancel')
-            ),
-          ],
-        )
-    );
-    }
-  }
     void login(Map rt) async {
         if (Platform.isIOS){
             // 结果检验成功，进行网络请求
@@ -808,8 +731,7 @@ enum GridViewWidgetMethodType {
   preVerify,
   autoVerify,
   manualVerify,
-  preMobileAuth,
-  mobileAuthVerify
+  preMobileAuth
 }
 
 class GridViewWidget {

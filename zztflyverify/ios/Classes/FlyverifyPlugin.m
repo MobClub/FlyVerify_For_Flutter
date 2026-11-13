@@ -22,7 +22,6 @@ typedef NS_ENUM(NSUInteger, FVPluginMethod) {
     FVPluginMethodPreVerify         = 8,
     FVPluginMethodVerify            = 9,
     FVPluginMethodMobileAuthToken   = 10,
-    FVPluginMethodMobileVerify      = 11,
     FVPluginMethodPlatformVersion   = 12,
     FVPluginMethodRegister          = 19
 };
@@ -108,9 +107,6 @@ typedef NS_ENUM(NSUInteger, FVPluginMethod) {
                 break;
             case FVPluginMethodMobileAuthToken:
                 [self _mobileAuth:call.arguments result:result];
-                break;
-            case FVPluginMethodMobileVerify:
-                [self _mobileVerify:call.arguments result:result];
                 break;
             case FVPluginMethodPlatformVersion:
                 [self _platformVersion:result];
@@ -343,49 +339,6 @@ typedef NS_ENUM(NSUInteger, FVPluginMethod) {
     }];
 }
 
-- (void)_mobileVerify:(NSDictionary *)params result:(FlutterResult)result {
-    if (!params
-        || [params isKindOfClass:[NSNull class]]
-        || ![params count]) {
-        return result([FlutterError errorWithCode:@"-999" message:@"Mobile Verify Params Can't Be Empty!" details:nil]);
-    }
-
-    if (![[params allKeys] containsObject:@"phoneNum"]) {
-        return result([FlutterError errorWithCode:@"-999" message:@"Mobile Verify Params Can't Be Empty!" details:nil]);
-    }
-
-    if (![[params allKeys] containsObject:@"tokenInfo"]) {
-        return result([FlutterError errorWithCode:@"-999" message:@"Mobile Verify Params Can't Be Empty!" details:nil]);
-    }
-
-    NSString *phoneNum = [params objectForKey:@"phoneNum"];
-    NSDictionary *tokenInfo = [params objectForKey:@"tokenInfo"];
-
-    double timeout = 4.0;
-    if ([[params allKeys] containsObject:@"timeout"]
-        && [[params objectForKey:@"timeout"] respondsToSelector:@selector(doubleValue)]) {
-        timeout = [[params objectForKey:@"timeout"] doubleValue];
-    }
-
-    [FVSDKHyVerify mobileAuthWith:phoneNum
-                            token:tokenInfo
-                          timeOut:timeout
-                       completion:^(NSDictionary * _Nullable resultDict, NSError * _Nullable error) {
-        NSMutableDictionary *mDict = [NSMutableDictionary dictionary];
-
-        if (resultDict
-            && ![resultDict isKindOfClass:[NSNull class]]
-            && [resultDict count]) {
-            [mDict setObject:resultDict forKey:@"ret"];
-        } else {
-            NSDictionary *errDict = @{@"err_code": @(error.code), @"err_desc": error.localizedDescription};
-            [mDict setObject:[errDict copy] forKey:@"err"];
-        }
-
-        result(mDict);
-    }];
-}
-
 #pragma mark - FVSDKVerifyDelegate Methods
 //授权页生命周期相关事件
 -(void)fvVerifyAuthPageViewDidLoad:(UIViewController *)authVC
@@ -489,7 +442,6 @@ typedef NS_ENUM(NSUInteger, FVPluginMethod) {
         @"preVerify": @(FVPluginMethodPreVerify),
         @"verify": @(FVPluginMethodVerify),
         @"mobileAuthToken": @(FVPluginMethodMobileAuthToken),
-        @"mobileVerify": @(FVPluginMethodMobileVerify),
         @"platformVersion": @(FVPluginMethodPlatformVersion),
         @"register": @(FVPluginMethodRegister)
     };
