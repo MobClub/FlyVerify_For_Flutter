@@ -37,8 +37,6 @@ class FlyVerifySDKMethods {
       FlyVerifySDKMethod(name: 'verify', id: 9);
   static final FlyVerifySDKMethod mobileAuthToken =
       FlyVerifySDKMethod(name: 'mobileAuthToken', id: 10);
-  static final FlyVerifySDKMethod mobileVerify =
-      FlyVerifySDKMethod(name: 'mobileVerify', id: 11);
   static final FlyVerifySDKMethod platformVersion =
       FlyVerifySDKMethod(name: 'platformVersion', id: 12);
   static final FlyVerifySDKMethod otherOAuthPage =

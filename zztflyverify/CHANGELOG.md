@@ -1,3 +1,6 @@
+## 1.0.6
+* 更新适配IOS 最新版SDK
+
 ## 1.0.5
 * update sdk version
 * add harmony

@@ -261,30 +261,6 @@ class Flyverify {
     return callBack;
   }
 
-  static Future<dynamic> mobileVerify(
-      {required String phoneNum,
-      required Map<String, dynamic> tokenInfo,
-      double? timeout,
-      required FlyVerifyResultListener result}) {
-    final Map<String, dynamic> args = {
-      'phoneNum': phoneNum,
-      'tokenInfo': tokenInfo,
-      'timeout': timeout
-    };
-    Future<dynamic> callBack =
-        _channel.invokeMethod(FlyVerifySDKMethods.mobileVerify.name, args);
-
-    callBack.then((dynamic response) {
-      if (response != null && response is Map) {
-        result(response['ret'], response['err']);
-      } else {
-        result(null, null);
-      }
-    });
-
-    return callBack;
-  }
-
   static Future<dynamic> manualDismissLoginVC({bool flag = false}) async {
     final Map<String, bool> args = {'flag': flag};
     return await _channel.invokeMethod(

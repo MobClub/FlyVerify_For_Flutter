@@ -145,7 +145,6 @@ OtherOAuthPageCallBack
 registerSDK
 isVerifySupport
 mobileAuthToken
-mobileVerify
 manualDismissLoginVC
 manualDismissLoading
 otherOAuthPageCallBack
